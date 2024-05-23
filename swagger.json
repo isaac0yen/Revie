@@ -1,0 +1,168 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Revie API",
+        "description": "API documentation for Revie platform",
+        "version": "1.0.0"
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Enter your bearer token in the format **Bearer &lt;token&gt;**"
+        }
+    },
+    "paths": {
+        "/api/users/register": {
+            "post": {
+                "summary": "Register a new user",
+                "parameters": [{
+                    "in": "body",
+                    "name": "user",
+                    "description": "User to register",
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "summary": "Login a user",
+                "parameters": [{
+                    "in": "body",
+                    "name": "credentials",
+                    "description": "User credentials",
+                    "schema": {
+                        "$ref": "#/definitions/Credentials"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    }
+                }
+            }
+        },
+        "/api/reviews": {
+            "post": {
+                "summary": "Create a new review",
+                "parameters": [{
+                    "in": "body",
+                    "name": "review",
+                    "description": "Review to create",
+                    "schema": {
+                        "$ref": "#/definitions/Review"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Review added successfully"
+                    }
+                },
+                "security": [{
+                    "Bearer": []
+                }]
+            },
+            "get": {
+                "summary": "Get all reviews",
+                "responses": {
+                    "200": {
+                        "description": "A list of reviews"
+                    }
+                }
+            }
+        },
+        "/api/reviews/{id}/helpful": {
+            "patch": {
+                "summary": "Mark a review as helpful",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Review marked as helpful"
+                    }
+                }
+            }
+        },
+        "/api/reviews/sort": {
+            "get": {
+                "summary": "Sort reviews",
+                "parameters": [{
+                    "in": "query",
+                    "name": "sortBy",
+                    "type": "string",
+                    "enum": ["helpful", "recent"]
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Sorted list of reviews"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Credentials": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Review": {
+            "type": "object",
+            "properties": {
+                "landlord": {
+                    "type": "string"
+                },
+                "environment": {
+                    "type": "string"
+                },
+                "amenities": {
+                    "type": "string"
+                },
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "videos": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
